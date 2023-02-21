@@ -18,9 +18,9 @@ enrichGO(pvalueCutoff  = 0.01)
 #                 qvalueCutoff  = 0.05,
 #                 readable      = TRUE)
 # saveRDS(ego,file = "ego.rds")
-ego <- readRDS("ego.rds")
+ego <- readRDS("a.rds")
 
-dotplot(ego,color="pvalue")
+enrichplot2::dotplot(ego,showCategory=20,color="pvalue")
 
 d <- godata('org.Hs.eg.db', ont="BP")
 ego2 <- pairwise_termsim(ego, method = "Wang", semData = d)

@@ -180,7 +180,8 @@ get_enriched <- function(object,colorBy="p.adjust") {
 fortify.internal <- function(model, data, showCategory=5, by = "Count",
                              order=FALSE, drop=FALSE, split=NULL,colorBy="p.adjust", ...) {
     res <- get_enriched(model,colorBy)
-    res <- res[!is.na(res$Description), ]
+    # res <- res[!is.na(res$Description), ]
+    res <- res@result
     if (inherits(model, "gseaResult")) {
         res$Count <- str_count(res$core_enrichment, "/")
         res$.sign <- "activated"
