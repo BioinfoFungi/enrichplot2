@@ -1,9 +1,9 @@
 ##' @rdname heatplot
 ##' @exportMethod heatplot
 setMethod("heatplot", signature(x = "enrichResult"),
-          function(x, showCategory = 30, foldChange = NULL) {
+          function(x, showCategory = 30, foldChange = NULL,...) {
               heatplot.enrichResult(x, showCategory, foldChange,
-                                    label_format = 30)
+                                    label_format = 30,...)
           })
 
 ##' @rdname heatplot
@@ -28,15 +28,15 @@ setMethod("heatplot", signature(x = "gseaResult"),
 ##' by default wraps names longer that 30 characters
 ##' @author Guangchuang Yu
 heatplot.enrichResult <- function(x, showCategory=30, foldChange=NULL,
-                                  label_format = 30) {
+                                  label_format = 30,colorBy="p.adjust") {
 
     label_func <- default_labeller(label_format)
     if(is.function(label_format)) {
         label_func <- label_format
     }
 
-    n <- update_n(x, showCategory)
-    geneSets <- extract_geneSets(x, n)
+    n <- update_n(x, showCategory,colorBy)
+    geneSets <- extract_geneSets(x, n,colorBy)
 
     foldChange <- fc_readable(x, foldChange)
     d <- list2df(geneSets)

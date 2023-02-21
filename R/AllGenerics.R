@@ -6,13 +6,13 @@
 ##' @title cnetplot
 ##' @rdname cnetplot
 ##' @param x Enrichment result.
-##' @param showCategory A number or a vector of terms. If it is a number, 
-##' the first n terms will be displayed. If it is a vector of terms, 
+##' @param showCategory A number or a vector of terms. If it is a number,
+##' the first n terms will be displayed. If it is a vector of terms,
 ##' the selected terms will be displayed.
-##' @param foldChange Fold Change of nodes, the default value is NULL. 
-##' If the user provides the Fold Change value of the nodes, 
+##' @param foldChange Fold Change of nodes, the default value is NULL.
+##' If the user provides the Fold Change value of the nodes,
 ##' it can be used to set the color of the gene node.
-##' @param layout Layout of the map, e.g. 'star', 'circle', 'gem', 'dh', 'graphopt', 'grid', 'mds', 
+##' @param layout Layout of the map, e.g. 'star', 'circle', 'gem', 'dh', 'graphopt', 'grid', 'mds',
 ##' 'randomly', 'fr', 'kk', 'drl' or 'lgl'.
 ##' @param ... Additional parameters
 ##' @return ggplot object
@@ -96,17 +96,17 @@ setGeneric("dotplot",
 ##'
 ##' This function visualizes gene sets as a network (i.e. enrichment map).
 ##' Mutually overlapping gene sets tend to cluster together, making it
-##' easier for interpretation. When the similarity between terms meets 
+##' easier for interpretation. When the similarity between terms meets
 ##' a certain threshold (default is 0.2, adjusted by parameter `min_edge`),
-##' there will be edges between terms. The stronger the similarity, 
-##' the shorter and thicker the edges. The similarity between terms is 
-##' obtained by function `pairwise_termsim`, the details of similarity 
+##' there will be edges between terms. The stronger the similarity,
+##' the shorter and thicker the edges. The similarity between terms is
+##' obtained by function `pairwise_termsim`, the details of similarity
 ##' calculation can be found in its documentation: \link{pairwise_termsim}.
 ##' @title emapplot
 ##' @rdname emapplot
 ##' @param x Enrichment result.
-##' @param showCategory A number or a vector of terms. If it is a number, 
-##' the first n terms will be displayed. If it is a vector of terms, 
+##' @param showCategory A number or a vector of terms. If it is a number,
+##' the first n terms will be displayed. If it is a vector of terms,
 ##' the selected terms will be displayed.
 ##' @param ... Additional parameters
 ##' @return ggplot object
@@ -126,7 +126,7 @@ setGeneric("dotplot",
 ##'     categorys <- c("pre-malignant neoplasm", "intestinal disease",
 ##'                    "breast ductal carcinoma", "non-small cell lung carcinoma")
 ##'     emapplot(x2, showCategory = categorys)
-##' 
+##'
 ##'     # It can also graph compareClusterResult
 ##'     data(gcSample)
 ##'     library(clusterProfiler)
@@ -144,7 +144,7 @@ setGeneric("emapplot",
 
 
 
-           
+
 ##' Get the similarity matrix
 ##'
 ##'
@@ -261,7 +261,7 @@ setGeneric("gseaplot",
 ##' heatplot(x)
 ##' @author guangchuang yu
 setGeneric("heatplot",
-           function(x, showCategory=30, foldChange=NULL)
+           function(x, showCategory=30, foldChange=NULL,...)
                standardGeneric("heatplot")
            )
 
@@ -308,7 +308,7 @@ setGeneric("ridgeplot",
 setGeneric("upsetplot", function(x, ...) standardGeneric("upsetplot"))
 
 
-##' Functional grouping tree diagram for enrichment result of 
+##' Functional grouping tree diagram for enrichment result of
 ##' over-representation test or gene set enrichment analysis.
 ##'
 ##'
@@ -355,12 +355,12 @@ setGeneric("upsetplot", function(x, ...) standardGeneric("upsetplot"))
 ##'     keep <- rownames(ego2@termsim)[c(1:10, 16:20)]
 ##'     keep
 ##'     treeplot(ego2, showCategory = keep)
-##'     treeplot(ego2, showCategory = 20, 
+##'     treeplot(ego2, showCategory = 20,
 ##'         group_color = c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442"))
 ##'    }
 setGeneric("treeplot",
            function(x, showCategory = 30, color="p.adjust", label_format = 30, ...)
                standardGeneric("treeplot")
            )
-           
+
 

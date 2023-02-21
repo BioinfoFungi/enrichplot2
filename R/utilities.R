@@ -137,7 +137,7 @@ fc_readable <- function(x, foldChange = NULL) {
     # return(palette)
 # }
 
-update_n <- function(x, showCategory) {
+update_n <- function(x, showCategory,colorBy="p.adjust") {
     if (!is.numeric(showCategory)) {
         if (inherits(x, 'list')) {
             showCategory <- showCategory[showCategory %in% names(x)]
@@ -150,7 +150,9 @@ update_n <- function(x, showCategory) {
     if (inherits(x, 'list')) {
         nn <- length(x)
     } else {
-        nn <- nrow(x)
+        # nn <- nrow(x)
+        x <- get_enriched(x,colorBy)
+        nn <- nrow(x@result)
     }
     if (nn < n) {
         n <- nn
@@ -159,16 +161,16 @@ update_n <- function(x, showCategory) {
     return(n)
 }
 
-extract_geneSets <- function(x, n) {
-    n <- update_n(x, n)
+extract_geneSets <- function(x, n,colorBy="p.adjust") {
+    n <- update_n(x, n,colorBy)
 
     if (inherits(x, 'list')) {
         geneSets <- x
     } else {
         geneSets <- geneInCategory(x) ## use core gene for gsea result
-        y <- as.data.frame(x)
+        y <- as.data.frame(x,colorBy)
         geneSets <- geneSets[y$ID]
-        names(geneSets) <- y$Description        
+        names(geneSets) <- y$Description
     }
     if (is.numeric(n)) {
         return(geneSets[1:n])
@@ -344,7 +346,7 @@ ep_str_wrap <- function(string, width) {
                i <- 1
                while(nchar(st) > width) {
                    if (length(grep(" ", st)) == 0) break
-                   y <- gregexpr(' ', st)[[1]]                  
+                   y <- gregexpr(' ', st)[[1]]
                    n <- nchar(st)
                    y <- c(y,n)
                    idx <- which(y < width)
@@ -353,7 +355,7 @@ ep_str_wrap <- function(string, width) {
                    # Split the string into two pieces
                    # The length of first piece is small than width
                    words[[i]] <- substring(st, 1, y[idx[length(idx)]] - 1)
-                   st <- substring(st, y[idx[length(idx)]] + 1, n)  
+                   st <- substring(st, y[idx[length(idx)]] + 1, n)
                    i <- i + 1
                }
                words[[i]] <- st
