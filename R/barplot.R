@@ -53,7 +53,7 @@ barplot.enrichResult <- function(height, x="Count", color='p.adjust',
         x <- "Count"
     }
 
-    df <- fortify(object, showCategory=showCategory, by=x, ...)
+    df <- fortify(object, showCategory=showCategory, by=x,colorBy=colorBy, ...)
 
     if(colorBy %in% colnames(df)) {
         p <- ggplot(df, aes_string(x = x, y = "Description", fill = colorBy)) +
