@@ -1,4 +1,4 @@
-Package: enrichplot
+Package: enrichplot2
 Title: Visualization of Functional Enrichment Result
 Version: 1.13.1.992
 Authors@R: c(
