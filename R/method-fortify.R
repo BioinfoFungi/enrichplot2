@@ -145,10 +145,41 @@ fortify.gseaResult <- function(model, data, showCategory=5, by = "Count",
     fortify.internal(model, data, showCategory, by, order, drop, split, ...)
 }
 
+get_enriched <- function(object,colorBy="p.adjust") {
+
+    Over <- object@result
+    pvalueCutoff <- object@pvalueCutoff
+    if(length(pvalueCutoff) != 0){
+        if(colorBy=="p.adjust"){
+            Over <- Over[ Over$p.adjust <= pvalueCutoff, ]
+        }else if(colorBy=="pvalue"){
+            Over <- Over[ Over$pvalue <= pvalueCutoff, ]
+        }else if(colorBy=="qvalue"){
+            Over <- Over[ Over$qvalue <= pvalueCutoff, ]
+        }
+    }
+
+    # if (length(pvalueCutoff) != 0) {
+    #     ## if groupGO result, numeric(0)
+    #     Over <- Over[ Over$pvalue <= pvalueCutoff, ]
+    #     Over <- Over[ Over$p.adjust <= pvalueCutoff, ]
+    # }
+    #
+    # qvalueCutoff <- object@qvalueCutoff
+    # if (length(qvalueCutoff) != 0) {
+    #     if (! any(is.na(Over$qvalue))) {
+    #         if (length(qvalueCutoff) > 0)
+    #             Over <- Over[ Over$qvalue <= qvalueCutoff, ]
+    #     }
+    # }
+
+    object@result <- Over
+    return(object)
+}
 
 fortify.internal <- function(model, data, showCategory=5, by = "Count",
-                             order=FALSE, drop=FALSE, split=NULL, ...) {
-    res <- as.data.frame(model)
+                             order=FALSE, drop=FALSE, split=NULL,colorBy="p.adjust", ...) {
+    res <- get_enriched(model,colorBy)
     res <- res[!is.na(res$Description), ]
     if (inherits(model, "gseaResult")) {
         res$Count <- str_count(res$core_enrichment, "/")

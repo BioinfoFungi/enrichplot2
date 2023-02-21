@@ -54,7 +54,7 @@ Or the development version from github:
 
     ## install.packages("devtools")
     devtools::install_github("YuLab-SMU/enrichplot")
-
+    devtools::install_github("BioinfoFungi/enrichplot2")
 :sparkling\_heart: Contributing
 -------------------------------
 
