@@ -6,10 +6,13 @@ get_enriched <- function(object,colorBy="p.adjust") {
     if(length(pvalueCutoff) != 0){
         if(colorBy=="p.adjust"){
             Over <- Over[ Over$p.adjust <= pvalueCutoff, ]
+            message("Usage p.adjust!")
         }else if(colorBy=="pvalue"){
             Over <- Over[ Over$pvalue <= pvalueCutoff, ]
+            message("Usage pvalue!")
         }else if(colorBy=="qvalue"){
             Over <- Over[ Over$qvalue <= pvalueCutoff, ]
+            message("Usage qvalue!")
         }
     }
 

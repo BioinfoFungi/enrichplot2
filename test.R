@@ -1,6 +1,7 @@
 library(tidyverse)
 library(clusterProfiler)
-library(org.Hs.eg.db)
+a <- "org.Hs.eg.db"
+library(a,character.only = TRUE)
 data(geneList, package="DOSE")
 gene <- names(geneList)[abs(geneList) > 2]
 length(gene)
@@ -50,15 +51,37 @@ de <- names(geneList)[abs(geneList) > 2]
 edo <- enrichDGN(de)
 edox <- setReadable(edo, 'org.Hs.eg.db', 'ENTREZID')
 
+a <- "org.Hs.eg.db"
+ego <- enrichGO(gene = de,
+                keyType = "ENTREZID",
+                OrgDb = "org.Hs.eg.db1",
+                ont = "all",
+                pAdjustMethod = "none",
+                qvalueCutoff = 10000,
+                pvalueCutoff = 0.05,
+                minGSSize = 10,
+                maxGSSize = 500,
+                readable = TRUE)
 
+AnnotationDbi::select(org.Hs.eg.db,
+                      keys = de,
+                      columns = c("ENTREZID"),
+                      keytype = "ENTREZID")
 
+organism("org.Hs.eg.db")
+annotations_orgDb <- AnnotationDbi::select(org.Mm.eg.db, # database
+                                           keys = rownames(degSig),  # data to use for retrieval
+                                           columns = c("ENTREZID","GENENAME"), # information to retreive for given data
+                                           keytype = "SYMBOL")
 
 heatplot(edox, foldChange=geneList, showCategory=5)
 
 
 
 
-
+for(i in 1:3) {                    # Head of for-loop
+    assign(paste0("x_", i), i)       # Combining assign & paste0
+}
 
 
 
