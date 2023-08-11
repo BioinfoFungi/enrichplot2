@@ -10,15 +10,15 @@ length(gene)
 enrichGO(pvalueCutoff  = 0.01)
 
 
-# ego <- enrichGO(gene          = gene,
-#                 universe      = names(geneList),
-#                 OrgDb         = org.Hs.eg.db,
-#                 ont           = "CC",
-#                 pAdjustMethod = "BH",
-#                 pvalueCutoff  = 0.01,
-#                 qvalueCutoff  = 0.05,
-#                 readable      = TRUE)
-# saveRDS(ego,file = "ego.rds")
+ego <- enrichGO(gene          = gene,
+                universe      = names(geneList),
+                OrgDb         = org.Hs.eg.db,
+                ont           = "CC",
+                pAdjustMethod = "BH",
+                pvalueCutoff  = 0.01,
+                qvalueCutoff  = 0.05,
+                readable      = TRUE)
+saveRDS(ego,file = "ego.rds")
 ego <- readRDS("ego.rds")
 
 heatplot(ego,showCategory=20,color="pvalue")
@@ -36,7 +36,9 @@ treeplot(ego2, showCategory = 30)
 
 
 
-
+edo <- pairwise_termsim(ego,color="pvalue")
+emapplot(edo,color="pvalue")
+emapplot(edo,color="p.adjust")
 
 
 

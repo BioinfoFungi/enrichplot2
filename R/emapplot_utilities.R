@@ -65,7 +65,7 @@ has_pairsim <- function(x) {
 ##' @param geneSets A list gene sets with the names of enrichment IDs
 ##' @param color a string, the column name of y for nodes colours
 ##' @param cex_line Numeric, scale of line width
-##' @param min_edge The minimum similarity threshold for whether 
+##' @param min_edge The minimum similarity threshold for whether
 ##' two nodes are connected, should between 0 and 1, default value is 0.2.
 ##' @param pair_sim Semantic similarity matrix.
 ##' @param method Method of calculating the similarity between nodes,
@@ -87,7 +87,7 @@ build_emap_graph <- function(enrichDf, geneSets, color, cex_line, min_edge,
         V(g)$color <- "red"
         return(g)
     } else {
-        w <- pair_sim[as.character(enrichDf$Description), 
+        w <- pair_sim[as.character(enrichDf$Description),
             as.character(enrichDf$Description)]
     }
 
@@ -123,13 +123,13 @@ build_emap_graph <- function(enrichDf, geneSets, color, cex_line, min_edge,
 ##' @param color variable that used to color enriched terms, e.g. 'pvalue',
 ##' 'p.adjust' or 'qvalue'.
 ##' @param cex_line Scale of line width.
-##' @param min_edge The minimum similarity threshold for whether 
+##' @param min_edge The minimum similarity threshold for whether
 ##' two nodes are connected, should between 0 and 1, default value is 0.2.
 ##'
 ##' @return an iGraph object
 ##' @noRd
 get_igraph <- function(x, nCategory, color, cex_line, min_edge){
-    y <- as.data.frame(x)
+    y <- as.data.frame(x,color)
     geneSets <- geneInCategory(x) ## use core gene for gsea result
     if (is.numeric(nCategory)) {
         y <- y[1:nCategory, ]
@@ -182,7 +182,7 @@ merge_compareClusterResult <- function(yy) {
 ##' @param layout Layout of the map.
 ##' @param color a string, the column name of y for nodes colours
 ##' @param cex_line Numeric, scale of line width
-##' @param min_edge The minimum similarity threshold for whether 
+##' @param min_edge The minimum similarity threshold for whether
 ##' two nodes are connected, should between 0 and 1, default value is 0.2.
 ##' @param pair_sim Semantic similarity matrix.
 ##' @param method Method of calculating the similarity between nodes,
@@ -190,14 +190,14 @@ merge_compareClusterResult <- function(yy) {
 ##' "JC" (Jaccard similarity coefficient) methods.
 ##' @param with_edge Logical, if TRUE (the default), draw the edges of the network diagram.
 ##' @noRd
-build_ggraph <- function(x, enrichDf, mergedEnrichDf, cex_category, pie, 
+build_ggraph <- function(x, enrichDf, mergedEnrichDf, cex_category, pie,
                          layout, coords, cex_line, min_edge, pair_sim,
                          method, with_edge){
     geneSets <- setNames(strsplit(as.character(mergedEnrichDf$geneID), "/",
-                              fixed = TRUE), mergedEnrichDf$ID) 
-                              
+                              fixed = TRUE), mergedEnrichDf$ID)
+
     g <- build_emap_graph(enrichDf=mergedEnrichDf,geneSets=geneSets,color="p.adjust",
-        cex_line=cex_line, min_edge=min_edge, pair_sim = x@termsim, 
+        cex_line=cex_line, min_edge=min_edge, pair_sim = x@termsim,
         method = x@method)
     ## when enrichDf just have one line
     if(is.null(dim(enrichDf)) | nrow(enrichDf) == 1) {
@@ -234,11 +234,11 @@ build_ggraph <- function(x, enrichDf, mergedEnrichDf, cex_category, pie,
             ggData <- p$data
             ggData$x <- coords$x
             ggData$y <- coords$y
-            p$data <- ggData  
+            p$data <- ggData
         }
     }
-    
-    
+
+
     ## add edges
     if (with_edge & length(E(g)$width) > 0) {
         p <- p + geom_edge_link(alpha=.8, aes_(width=~I(width)),
@@ -249,8 +249,8 @@ build_ggraph <- function(x, enrichDf, mergedEnrichDf, cex_category, pie,
 
 ## Keep selected category in enrichment result
 ##
-## @param showCategory A number or a vector of terms. If it is a number, 
-## the first n terms will be displayed. If it is a vector of terms, 
+## @param showCategory A number or a vector of terms. If it is a number,
+## the first n terms will be displayed. If it is a vector of terms,
 ## the selected terms will be displayed.
 ## @param x Enrichment result
 ## @param split Separate result by 'category' variable.
@@ -325,7 +325,7 @@ get_label_location <- function(ggData, label_format) {
 ##'
 ##' @param label_style style of group label, one of "shadowtext" and "ggforce".
 ##' @param repel a logical value, whether to correct the position of the label.
-##' @param shadowtext a logical value, whether to use shadow font. 
+##' @param shadowtext a logical value, whether to use shadow font.
 ##' @param p a ggplot2 object.
 ##' @param label_location a data.frame with the location of group label.
 ##' @param label_group a numeric value, default size of group label.
@@ -333,7 +333,7 @@ get_label_location <- function(ggData, label_format) {
 ##' @param ... additional parameters.
 ##' @return a ggplot2 object.
 ##' @noRd
-add_group_label <- function(label_style, repel, shadowtext, p, label_location, 
+add_group_label <- function(label_style, repel, shadowtext, p, label_location,
                             label_group, cex_label_group, ...) {
     if (label_style != "shadowtext") return(p)
     if (!repel) {
@@ -346,7 +346,7 @@ add_group_label <- function(label_style, repel, shadowtext, p, label_location,
                 aes_(x =~ x, y =~ y, label =~ label), colour = "black",
                 size = label_group * cex_label_group)
         }
-        
+
         return(p)
     }
 
@@ -358,10 +358,10 @@ add_group_label <- function(label_style, repel, shadowtext, p, label_location,
     } else {
         p <- p + ggrepel::geom_text_repel(data = label_location,
             aes_(x =~ x, y =~ y, label =~ label), colour = "black",
-            size = label_group * cex_label_group, 
+            size = label_group * cex_label_group,
             show.legend = FALSE, ...)
     }
-    return(p)   
+    return(p)
 }
 
 ##' Add node label to a ggplot2 object
@@ -370,7 +370,7 @@ add_group_label <- function(label_style, repel, shadowtext, p, label_location,
 ##' @param data it is uesd as the `data` parameter of function `ggraph::geom_node_text`, a data.frame or NULL.
 ##' @param label_size_node a numeric value to indicate the font size of the node label.
 ##' @param cex_label_node a numeric value to indicate the scale of node label size.
-##' @param shadowtext  a logical value, whether to use shadow font. 
+##' @param shadowtext  a logical value, whether to use shadow font.
 ##' @return a ggplot2 object.
 ##' @noRd
 add_node_label <- function(p, data, label_size_node, cex_label_node, shadowtext) {
@@ -388,13 +388,13 @@ add_node_label <- function(p, data, label_size_node, cex_label_node, shadowtext)
 
 
 ##' Cluster similar nodes together by k-means
-##' 
+##'
 ##' @param p a ggraph object.
 ##' @param enrichDf data.frame of enrichment result.
 ##' @param nWords Numeric, the number of words in the cluster tags.
 ##' @param clusterFunction function of Clustering method, such as stats::kmeans, cluster::clara,
 ##' cluster::fanny or cluster::pam.
-##' @param nCluster Numeric, the number of clusters, 
+##' @param nCluster Numeric, the number of clusters,
 ##' the default value is square root of the number of nodes.
 ##' @noRd
 groupNode <- function(p, enrichDf, nWords, clusterFunction =  stats::kmeans, nCluster) {
@@ -403,9 +403,9 @@ groupNode <- function(p, enrichDf, nWords, clusterFunction =  stats::kmeans, nCl
          "set to default `clusterFunction = kmeans`")
     if (!"color2" %in% colnames(ggData)) {
         dat <- data.frame(x = ggData$x, y = ggData$y)
-        nCluster <- ifelse(is.null(nCluster), floor(sqrt(nrow(dat))), 
+        nCluster <- ifelse(is.null(nCluster), floor(sqrt(nrow(dat))),
                            min(nCluster, nrow(dat)))
-        ggData$color2 <- tryCatch(expr  = clusterFunction(dat, nCluster)$cluster, 
+        ggData$color2 <- tryCatch(expr  = clusterFunction(dat, nCluster)$cluster,
                                   error = function(e) {
                                       message(wrongMessage)
                                       stats::kmeans(dat, nCluster)$cluster
@@ -421,7 +421,7 @@ groupNode <- function(p, enrichDf, nWords, clusterFunction =  stats::kmeans, nCl
     cluster_label <- sapply(cluster_color, get_wordcloud, ggData = ggData,
                             nWords=nWords)
     names(cluster_label) <- cluster_color
-    ggData$color2 <- cluster_label[as.character(ggData$color2)] 
+    ggData$color2 <- cluster_label[as.character(ggData$color2)]
     return(ggData)
 }
 
@@ -435,10 +435,10 @@ groupNode <- function(p, enrichDf, nWords, clusterFunction =  stats::kmeans, nCl
 ##' @param ellipse_pro numeric indicating confidence value for the ellipses
 ##' @param alpha the transparency of ellipse fill.
 ##' @noRd
-add_ellipse <- function(p, group_legend, label_style, 
+add_ellipse <- function(p, group_legend, label_style,
     ellipse_style = "ggforce", ellipse_pro = 0.95, alpha = 0.3, ...) {
     show_legend <- c(group_legend, FALSE)
-    names(show_legend) <- c("fill", "color") 
+    names(show_legend) <- c("fill", "color")
     ellipse_style <- match.arg(ellipse_style, c("ggforce", "polygon"))
     if (ellipse_style == "ggforce") {
         if (label_style == "shadowtext") {
@@ -450,8 +450,8 @@ add_ellipse <- function(p, group_legend, label_style,
                         show.legend = show_legend)
         }
         if (group_legend) p <- p + scale_fill_discrete(name = "groups")
-     } 
-    
+     }
+
     if (ellipse_style == "polygon") {
         p <- p + ggplot2::stat_ellipse(aes_(x =~ x, y =~ y, fill =~ color2),
                                        geom = "polygon", level = ellipse_pro,
@@ -463,7 +463,7 @@ add_ellipse <- function(p, group_legend, label_style,
 }
 # add_ellipse <- function(p, group_legend, label_style) {
 #     show_legend <- c(group_legend, FALSE)
-#     names(show_legend) <- c("fill", "color") 
+#     names(show_legend) <- c("fill", "color")
 #     if (label_style == "shadowtext") {
 #             p <- p + ggforce::geom_mark_ellipse(aes_(x =~ x, y =~ y, color =~ color2,
 #                          fill =~ color2), show.legend = show_legend)
@@ -476,7 +476,7 @@ add_ellipse <- function(p, group_legend, label_style,
 # }
 
 
-##' add category nodes 
+##' add category nodes
 ##'
 ##' @param p ggplot2 object
 ##' @param cex_category Number indicating the amount by which plotting category
@@ -491,15 +491,15 @@ add_category_nodes <- function(p, cex_category, color) {
         scale_size_continuous(name = "number of genes",
                               range = c(3, 8) * cex_category) +
         scale_fill_continuous(low = "red", high = "blue", name = color,
-                              guide = guide_colorbar(reverse = TRUE)) + 
+                              guide = guide_colorbar(reverse = TRUE)) +
         theme(legend.title = element_text(size = 10),
                    legend.text  = element_text(size = 10)) +
-        theme(panel.background = element_blank()) 
+        theme(panel.background = element_blank())
 }
 
 
 
-##' Get data for pie plot 
+##' Get data for pie plot
 ##'
 ##' @param enrichDf A data.frame of enrichment result.
 ##' @param pie proportion of clusters in the pie chart, one of 'equal' (default) and 'Count'
@@ -511,7 +511,7 @@ add_category_nodes <- function(p, cex_category, color) {
 ##' @noRd
 get_pie_data <- function(enrichDf, pie, mergedEnrichDf, cex_pie2axis, p, cex_category) {
     ggData <- p$data
-    ID_Cluster_mat <- prepare_pie_category(enrichDf = enrichDf, pie=pie) 
+    ID_Cluster_mat <- prepare_pie_category(enrichDf = enrichDf, pie=pie)
     desc <- mergedEnrichDf$Description[match(rownames(ID_Cluster_mat),
                                       mergedEnrichDf$Description)]
     i <- match(desc, ggData$name)
@@ -521,7 +521,7 @@ get_pie_data <- function(enrichDf, pie, mergedEnrichDf, cex_pie2axis, p, cex_cat
     return(ID_Cluster_mat)
 }
 
-##' Add category node(pie plot) 
+##' Add category node(pie plot)
 ##'
 ##' @param p ggplot2 object.
 ##' @param ID_Cluster_mat a matrix data for pie plot
@@ -535,25 +535,25 @@ get_pie_data <- function(enrichDf, pie, mergedEnrichDf, cex_pie2axis, p, cex_cat
 ##' @param legend_n number of circle in legend
 ##' @param label_size_category Base size of node label.
 ##' @noRd
-add_pie_node <- function(p, ID_Cluster_mat, node_label, 
+add_pie_node <- function(p, ID_Cluster_mat, node_label,
                          cex_category, cex_pie2axis,
                          cex_label_category,
                          shadowtext, legend_n,
                          label_size_category) {
     color <- NULL
     if(ncol(ID_Cluster_mat) > 4) {
-        p <- p + ggnewscale::new_scale_fill() + 
+        p <- p + ggnewscale::new_scale_fill() +
             geom_scatterpie(aes_(x=~x,y=~y,r=~radius), data=ID_Cluster_mat,
             cols=colnames(ID_Cluster_mat)[1:(ncol(ID_Cluster_mat)-3)],color=NA) +
-            coord_equal() 
+            coord_equal()
 
         if (node_label == "all" || node_label == "category") {
             p <- add_node_label(p = p, data = NULL, label_size_node = label_size_category,
                 cex_label_node = cex_label_category, shadowtext = shadowtext)
         }
-        
+
         p <- p + theme_void() +
-            geom_scatterpie_legend(ID_Cluster_mat$radius, 
+            geom_scatterpie_legend(ID_Cluster_mat$radius,
                 x=min(ID_Cluster_mat$x), y=min(ID_Cluster_mat$y),
                 n = legend_n,
                 labeller=function(x) round(sum(p$data$size) * x^2 / cex_category/ cex_pie2axis)) +
@@ -567,7 +567,7 @@ add_pie_node <- function(p, ID_Cluster_mat, node_label,
         }
         p <- p + scale_color_continuous(low="red", high="blue", name = color,
                                         guide=guide_colorbar(reverse=TRUE)) +
-            scale_size(range=c(3, 8) * cex_category)  +labs(title= title)  
-    }  
+            scale_size(range=c(3, 8) * cex_category)  +labs(title= title)
+    }
     return(p)
 }

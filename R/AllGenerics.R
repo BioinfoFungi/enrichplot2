@@ -187,7 +187,7 @@ setGeneric("emapplot",
 ##'     emapplot_cluster(ego2)
 ##'    }
 setGeneric("pairwise_termsim",
-           function(x, method = "JC", semData = NULL, showCategory = 200)
+           function(x, method = "JC", semData = NULL, showCategory = 200,...)
                standardGeneric("pairwise_termsim")
            )
 
